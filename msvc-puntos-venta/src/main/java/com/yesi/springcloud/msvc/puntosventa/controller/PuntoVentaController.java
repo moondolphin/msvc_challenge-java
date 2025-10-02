@@ -12,18 +12,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yesi.springcloud.msvc.puntosventa.model.PuntoVenta;
 import com.yesi.springcloud.msvc.puntosventa.services.PuntoVentaCacheServiceImpl;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/api/puntos-venta")
 public class PuntoVentaController {
 
-     private final PuntoVentaCacheServiceImpl puntoVentaService;
+    private final PuntoVentaCacheServiceImpl puntoVentaService;
 
     public PuntoVentaController(PuntoVentaCacheServiceImpl puntoVentaService) {
         this.puntoVentaService = puntoVentaService;
     }
 
-     @GetMapping
+    @GetMapping
     public ResponseEntity<Collection<PuntoVenta>> devuelveTodosPuntosVentas() {
         return ResponseEntity.ok(puntoVentaService.obtenerTodos());
     }
@@ -33,4 +35,15 @@ public class PuntoVentaController {
         PuntoVenta puntoVentaGuardado = puntoVentaService.guardarUnPuntoVenta(nuevoPuntoVenta);
         return ResponseEntity.status(HttpStatus.CREATED).body(puntoVentaGuardado);
     }
+
+    @PutMapping("path/{id}")
+    public ResponseEntity<PuntoVenta> actualizarDePuntoVenta(@PathVariable Integer id, @RequestBody PuntoVenta actPuntoVenta) {
+        PuntoVenta puntoParaActualizar = new PuntoVenta(id, actPuntoVenta.name());
+
+        return puntoVentaService.actualizarUnPuntoVenta(puntoParaActualizar)
+                .map(puntoGuardado -> ResponseEntity.ok(puntoGuardado))
+                .orElseGet(() -> ResponseEntity.notFound().build()); 
+
+    }
+
 }

@@ -2,12 +2,12 @@ package com.yesi.springcloud.msvc.puntosventa.services;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Service;
 import com.yesi.springcloud.msvc.puntosventa.model.PuntoVenta;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-
 
 @Service
 @Slf4j
@@ -27,17 +27,25 @@ public class PuntoVentaCacheServiceImpl {
         cachePuntosDeVenta.put(8, new PuntoVenta(8, "Chubut"));
         cachePuntosDeVenta.put(9, new PuntoVenta(9, "Santa Cruz"));
         cachePuntosDeVenta.put(10, new PuntoVenta(10, "Catamarca"));
-       
+
     }
 
-    
     public Collection<PuntoVenta> obtenerTodos() {
         return cachePuntosDeVenta.values();
     }
 
-     public PuntoVenta guardarUnPuntoVenta(PuntoVenta nuevoPuntoVenta) {
+    public PuntoVenta guardarUnPuntoVenta(PuntoVenta nuevoPuntoVenta) {
         log.info("Guardando nuevo punto de venta con ID: {}", nuevoPuntoVenta.id());
         cachePuntosDeVenta.put(nuevoPuntoVenta.id(), nuevoPuntoVenta);
         return nuevoPuntoVenta;
+    }
+
+    public Optional<PuntoVenta> actualizarUnPuntoVenta(PuntoVenta cambioPuntoVenta) {
+        log.info("Actualizando el siguiente punto de venta con ID: {}", cambioPuntoVenta.id());
+        if (cachePuntosDeVenta.containsKey(cambioPuntoVenta.id())) {
+            cachePuntosDeVenta.put(cambioPuntoVenta.id(), cambioPuntoVenta);
+            return Optional.of(cambioPuntoVenta);
+        }
+        return Optional.empty();
     }
 }
