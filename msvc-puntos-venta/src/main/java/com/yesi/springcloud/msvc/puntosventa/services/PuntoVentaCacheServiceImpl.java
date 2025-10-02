@@ -34,4 +34,10 @@ public class PuntoVentaCacheServiceImpl {
     public Collection<PuntoVenta> obtenerTodos() {
         return cachePuntosDeVenta.values();
     }
+
+     public PuntoVenta guardarUnPuntoVenta(PuntoVenta nuevoPuntoVenta) {
+        log.info("Guardando nuevo punto de venta con ID: {}", nuevoPuntoVenta.id());
+        cachePuntosDeVenta.put(nuevoPuntoVenta.id(), nuevoPuntoVenta);
+        return nuevoPuntoVenta;
+    }
 }
