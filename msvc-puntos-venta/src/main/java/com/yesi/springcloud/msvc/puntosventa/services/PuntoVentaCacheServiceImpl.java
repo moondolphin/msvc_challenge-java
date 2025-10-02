@@ -48,4 +48,9 @@ public class PuntoVentaCacheServiceImpl {
         }
         return Optional.empty();
     }
+
+    public Optional<PuntoVenta> eliminarUnPuntoVenta(Integer id) {
+        log.info("Eliminando punto de venta con ID: {}", id);
+        return Optional.ofNullable(cachePuntosDeVenta.remove(id));
+    }
 }
