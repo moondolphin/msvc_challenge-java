@@ -29,18 +29,18 @@ public class PuntoVentaController {
         this.puntoVentaService = puntoVentaService;
     }
 
-    @GetMapping
+    @GetMapping("/devolver-todos")
     public ResponseEntity<Collection<PuntoVenta>> devuelveTodosPuntosVentas() {
         return ResponseEntity.ok(puntoVentaService.obtenerTodos());
     }
 
-    @PostMapping
+    @PostMapping("/guardar-nuevo")
     public ResponseEntity<PuntoVenta> guardarNuevoPuntoVenta(@RequestBody PuntoVenta nuevoPuntoVenta) {
         PuntoVenta puntoVentaGuardado = puntoVentaService.guardarUnPuntoVenta(nuevoPuntoVenta);
         return ResponseEntity.status(HttpStatus.CREATED).body(puntoVentaGuardado);
     }
 
-    @PutMapping("actualizar/{id}")
+    @PutMapping("/actualizar/{id}")
     public ResponseEntity<PuntoVenta> actualizarDePuntoVenta(@PathVariable Integer id,
             @RequestBody PuntoVenta actPuntoVenta) {
         PuntoVenta puntoParaActualizar = new PuntoVenta(id, actPuntoVenta.name());
@@ -51,7 +51,7 @@ public class PuntoVentaController {
 
     }
 
-    @DeleteMapping("eliminar/{id}")
+    @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<Map<String, String>> eliminarPuntoVenta(@PathVariable Integer id) {
         Optional<PuntoVenta> puntoOptional = puntoVentaService.eliminarUnPuntoVenta(id);
 
