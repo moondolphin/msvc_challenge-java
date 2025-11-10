@@ -1,5 +1,6 @@
 package com.yesi.springcloud.msvc.costos.services;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,7 +20,7 @@ public class CostoService {
 
     @PostConstruct
     private void cargarDatosIniciales() {
-        // Usamos un método helper para cargar los datos y asegurar la simetría
+        // Usamos un metodo helper para cargar los datos y asegurar la simetría
         addCosto(1, 2, 2);
         addCosto(1, 3, 3);
         addCosto(2, 3, 5);
@@ -53,7 +54,7 @@ public class CostoService {
     }
 
 
-
+    //elimina costo
     public Optional<Costo> eliminarCosto(Integer idOrigen, Integer idDestino) {
         log.info("Se va a eliminar costo entre: ", idOrigen, " y ", idDestino);
 
@@ -106,5 +107,15 @@ public class CostoService {
             return Optional.empty();
         }
     }
+
+    //consultar punto de venta y los costos que implican
+    public Map<Integer, Integer> consultarPuntosDeVenta(Integer idOrigen) {
+        log.info("Buscando vecinos directos para el punto {}", idOrigen);
+        //se busca el punto de venta usando el idOrigen.
+        // cacheCostos.get(idOrigen) puede devolver null si el ID no tiene entradas
+        return Optional.ofNullable(cacheCostos.get(idOrigen))
+                       .orElse(Collections.emptyMap());
+    }
+
 
 }
